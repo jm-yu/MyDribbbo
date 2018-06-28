@@ -1,30 +1,34 @@
 package jmyu.ufl.edu.mydribbbo;
 
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import jmyu.ufl.edu.mydribbbo.view.bucket_list.BucketListFragment;
 import jmyu.ufl.edu.mydribbbo.view.shot_list.ShotListFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    private DrawerLayout mDrawerLayout;
-    private NavigationView navigationView;
+    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @BindView(R.id.nav_view) NavigationView navigationView;
+    @BindView(R.id.toolbar) Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
+        ButterKnife.bind(this);
 
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
 
@@ -45,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.drawer_item_home:
                                 fragment = ShotListFragment.newInstance();
                                 Toast.makeText(MainActivity.this, "1", Toast.LENGTH_SHORT).show();
-
                                 setTitle(R.string.title_home);
                                 break;
                             case R.id.drawer_item_likes:

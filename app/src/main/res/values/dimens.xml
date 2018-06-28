@@ -6,4 +6,7 @@
     <dimen name="spacing_large">24dp</dimen>
     <dimen name="list_shot_detail_bar_height">40dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
+    <dimen name="nav_header_height">192dp</dimen>
+    <dimen name="nav_header_padding">24dp</dimen>
 </resources>
