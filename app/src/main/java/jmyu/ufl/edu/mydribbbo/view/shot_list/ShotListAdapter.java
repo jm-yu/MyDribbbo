@@ -30,10 +30,8 @@ class ShotListAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        System.out.println(1);
+        System.out.println(position);
         Shot shot = data.get(position);
-        System.out.println(shot);
-        System.out.print(shot.likes_count);
         ShotViewHolder shotViewHolder = (ShotViewHolder) holder;
         shotViewHolder.likeCount.setText(String.valueOf(shot.likes_count));
         shotViewHolder.bucketCount.setText(String.valueOf(shot.buckets_count));

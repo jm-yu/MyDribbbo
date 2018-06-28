@@ -10,4 +10,7 @@
     <string name="title_likes">Likes</string>
     <string name="title_buckets">Buckets</string>
     <string name="shot_image">shot image</string>
+
+    <string name="shot_count">{0,choice,0#0 shot|1#1 shot|1&lt;{0} shots}</string>
+
 </resources>
