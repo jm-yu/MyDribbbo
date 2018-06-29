@@ -57,6 +57,7 @@ public class ShotListFragment extends Fragment {
             shot.views_count = random.nextInt(10000);
             shot.likes_count = random.nextInt(200);
             shot.buckets_count = random.nextInt(50);
+            shot.description = "shot" + i + "'s description";
             shotList.add(shot);
         }
         return shotList;
