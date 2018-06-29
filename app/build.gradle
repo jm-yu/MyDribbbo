@@ -33,4 +33,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     androidTestCompile 'junit:junit:4.12'
     androidTestCompile 'org.testng:testng:6.9.6'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+
 }

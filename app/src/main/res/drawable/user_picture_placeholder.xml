@@ -4,7 +4,7 @@
         android:width="@dimen/shot_author_picture_size"
         android:height="@dimen/shot_author_picture_size"/>
     <solid
-        android:color="@color/place_holder_bg"/>
+        android:color="@color/place_holder_color"/>
     <corners
         android:radius="@dimen/shot_author_picture_radius"/>
 </shape>

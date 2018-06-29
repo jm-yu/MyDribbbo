@@ -1,8 +1,8 @@
 package jmyu.ufl.edu.mydribbbo.view.base;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -33,7 +33,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container, newFragment())
+                    .add(R.id.content_frame, newFragment())
                     .commit();
         }
     }

@@ -1,7 +1,7 @@
 package jmyu.ufl.edu.mydribbbo.view.shot_detail;
 
-import android.app.Fragment;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 
 import jmyu.ufl.edu.mydribbbo.view.base.SingleFragmentActivity;
 
