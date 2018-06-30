@@ -7,11 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.List;
 
 import jmyu.ufl.edu.mydribbbo.R;
 import jmyu.ufl.edu.mydribbbo.model.Shot;
 import jmyu.ufl.edu.mydribbbo.view.shot_detail.ShotActivity;
+import jmyu.ufl.edu.mydribbbo.view.shot_detail.ShotFragment;
 
 /**
  * Created by jmyu on 6/27/18.
@@ -33,7 +37,6 @@ class ShotListAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        System.out.println(position);
         Shot shot = data.get(position);
         ShotViewHolder shotViewHolder = (ShotViewHolder) holder;
         shotViewHolder.likeCount.setText(String.valueOf(shot.likes_count));
@@ -44,6 +47,11 @@ class ShotListAdapter extends RecyclerView.Adapter {
         shotViewHolder.cover.setOnClickListener(v -> {
             Context context = holder.itemView.getContext();
             Intent intent = new Intent(context, ShotActivity.class);
+
+            Gson gson = new Gson();
+            intent.putExtra(ShotFragment.KEY_SHOT, gson.toJson(shot, new TypeToken<Shot>(){}.getType()));
+            intent.putExtra(ShotActivity.KEY_SHOT_TITLE, shot.title);
+            context.startActivity(intent);
         });
     }
 

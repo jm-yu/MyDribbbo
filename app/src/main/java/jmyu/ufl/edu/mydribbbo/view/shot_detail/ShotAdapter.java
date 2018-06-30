@@ -1,8 +1,11 @@
 package jmyu.ufl.edu.mydribbbo.view.shot_detail;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
+import jmyu.ufl.edu.mydribbbo.R;
 import jmyu.ufl.edu.mydribbbo.model.Shot;
 
 /**
@@ -23,13 +26,34 @@ class ShotAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // todo
+        if (viewType == VIEW_SHOT_TYPE_IMAGE){
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.shot_item_image, parent, false);
+            return new ShotImageViewHolder(view);
+        } else if(viewType == VIEW_SHOT_TYPE_INFO){
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.shot_item_info, parent, false);
+            return new ShotInfoViewHolder(view);
+        }
         return null;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        // todo
+        int viewType = getItemViewType(position);
+        switch (viewType) {
+            case VIEW_SHOT_TYPE_IMAGE :
+                // todo show a picture
+                break;
+            case VIEW_SHOT_TYPE_INFO :
+                ShotInfoViewHolder shotDetailViewHolder = (ShotInfoViewHolder) holder;
+
+                shotDetailViewHolder.title.setText(shot.title);
+                shotDetailViewHolder.authorName.setText(shot.user.name);
+                shotDetailViewHolder.description.setText(shot.description);
+                shotDetailViewHolder.likeCount.setText(String.valueOf(shot.likes_count));
+                shotDetailViewHolder.bucketCount.setText(String.valueOf(shot.buckets_count));
+                shotDetailViewHolder.viewCount.setText(String.valueOf(shot.views_count));
+                break;
+        }
 
     }
 
@@ -40,7 +64,11 @@ class ShotAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        // todo
-        return super.getItemViewType(position);
+        if (position == 0) {
+            return VIEW_SHOT_TYPE_IMAGE;
+        } else if (position == 1){
+            return VIEW_SHOT_TYPE_INFO;
+        }
+        return -1;
     }
 }
