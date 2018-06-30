@@ -47,7 +47,6 @@ class ShotListAdapter extends RecyclerView.Adapter {
         shotViewHolder.cover.setOnClickListener(v -> {
             Context context = holder.itemView.getContext();
             Intent intent = new Intent(context, ShotActivity.class);
-
             Gson gson = new Gson();
             intent.putExtra(ShotFragment.KEY_SHOT, gson.toJson(shot, new TypeToken<Shot>(){}.getType()));
             intent.putExtra(ShotActivity.KEY_SHOT_TITLE, shot.title);

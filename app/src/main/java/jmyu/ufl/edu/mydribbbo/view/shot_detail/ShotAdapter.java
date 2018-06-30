@@ -1,5 +1,6 @@
 package jmyu.ufl.edu.mydribbbo.view.shot_detail;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,7 @@ class ShotAdapter extends RecyclerView.Adapter {
     private static final int VIEW_SHOT_TYPE_IMAGE = 1;
     private static final int VIEW_SHOT_TYPE_INFO = 2;
 
-    public ShotAdapter(Shot shot) {
+    public ShotAdapter(@NonNull Shot shot) {
         this.shot = shot;
     }
 

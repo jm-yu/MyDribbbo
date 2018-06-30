@@ -107,8 +107,8 @@
         <TextView
             android:id="@+id/shot_title"
             style="@style/AppTheme.TextView.2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignTop="@id/shot_author_picture"
             android:layout_toRightOf="@id/shot_author_picture"
             tools:text="Shot title" />

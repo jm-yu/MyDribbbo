@@ -18,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import jmyu.ufl.edu.mydribbbo.R;
 import jmyu.ufl.edu.mydribbbo.model.Shot;
+import jmyu.ufl.edu.mydribbbo.model.User;
 
 
 /**
@@ -54,10 +55,15 @@ public class ShotListFragment extends Fragment {
         Random random = new Random();
         for (int i = 0; i < 20; ++i) {
             Shot shot = new Shot();
+            shot.title = "shot" + i;
             shot.views_count = random.nextInt(10000);
             shot.likes_count = random.nextInt(200);
             shot.buckets_count = random.nextInt(50);
-            shot.description = "shot" + i + "'s description";
+            shot.description = shot.title +  " description";
+
+            shot.user = new User();
+            shot.user.name = shot.title + " author";
+
             shotList.add(shot);
         }
         return shotList;
