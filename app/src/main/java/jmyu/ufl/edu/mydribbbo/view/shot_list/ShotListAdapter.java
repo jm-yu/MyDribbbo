@@ -82,6 +82,11 @@ class ShotListAdapter extends RecyclerView.Adapter {
         return position < data.size() ? VIEW_TYPE_SHOT : VIEW_TYPE_LOADING;
     }
 
+    public void append(List<Shot> shots) {
+        data.addAll(shots);
+        notifyDataSetChanged();
+    }
+
     public interface LoadMoreListener {
         public void loadMore();
     }

@@ -1,6 +1,7 @@
 package jmyu.ufl.edu.mydribbbo.view.shot_list;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +30,8 @@ public class ShotListFragment extends Fragment {
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
+    private ShotListAdapter adapter;
+
     public static ShotListFragment newInstance() {
         return new ShotListFragment();
     }
@@ -47,10 +49,26 @@ public class ShotListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ShotListAdapter adapter = new ShotListAdapter(fakeData(), new ShotListAdapter.LoadMoreListener() {
+        final Handler handler = new Handler();
+        adapter = new ShotListAdapter(fakeData(), new ShotListAdapter.LoadMoreListener() {
             @Override
             public void loadMore() {
-                Toast.makeText(getContext(), "load more called", Toast.LENGTH_LONG).show();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter.append(fakeData());
+                            }
+                        });
+                    }
+                }).start();
             }
         });
         recyclerView.setAdapter(adapter);
