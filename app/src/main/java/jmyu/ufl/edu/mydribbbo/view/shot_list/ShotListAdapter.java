@@ -25,6 +25,7 @@ class ShotListAdapter extends RecyclerView.Adapter {
 
     private List<Shot> data;
     private LoadMoreListener loadMoreListener;
+    private boolean showLoading;
 
     private static final int VIEW_TYPE_SHOT = 1;
     private static final int VIEW_TYPE_LOADING = 2;
@@ -33,6 +34,7 @@ class ShotListAdapter extends RecyclerView.Adapter {
     public ShotListAdapter(List<Shot> shots, LoadMoreListener loadMoreListener) {
         this.data = shots;
         this.loadMoreListener = loadMoreListener;
+        this.showLoading = true;
     }
 
     @Override
@@ -74,7 +76,7 @@ class ShotListAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return data.size() + 1;
+        return showLoading ? data.size() + 1 : data.size();
     }
 
     @Override
@@ -85,6 +87,17 @@ class ShotListAdapter extends RecyclerView.Adapter {
     public void append(List<Shot> shots) {
         data.addAll(shots);
         notifyDataSetChanged();
+    }
+
+    public int getDataCount() {
+        return data.size();
+    }
+
+    public void setShowLoading(boolean showLoading) {
+        if (showLoading != this.showLoading){
+            this.showLoading = showLoading;
+            notifyDataSetChanged();
+        }
     }
 
     public interface LoadMoreListener {

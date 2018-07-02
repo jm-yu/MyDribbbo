@@ -31,6 +31,7 @@ public class ShotListFragment extends Fragment {
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
     private ShotListAdapter adapter;
+    private static final int COUNT_PER_PAGE = 10;
 
     public static ShotListFragment newInstance() {
         return new ShotListFragment();
@@ -50,7 +51,7 @@ public class ShotListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         final Handler handler = new Handler();
-        adapter = new ShotListAdapter(fakeData(), new ShotListAdapter.LoadMoreListener() {
+        adapter = new ShotListAdapter(fakeData(0), new ShotListAdapter.LoadMoreListener() {
             @Override
             public void loadMore() {
                 new Thread(new Runnable() {
@@ -64,7 +65,10 @@ public class ShotListFragment extends Fragment {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                adapter.append(fakeData());
+                                List<Shot> moreData =fakeData(adapter.getDataCount() / COUNT_PER_PAGE);
+                                adapter.append(moreData);
+                                System.out.println(moreData.size() == COUNT_PER_PAGE);
+                                adapter.setShowLoading(moreData.size() == COUNT_PER_PAGE);
                             }
                         });
                     }
@@ -74,10 +78,10 @@ public class ShotListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
-    private List<Shot> fakeData() {
+    private List<Shot> fakeData(int page) {
         List<Shot> shotList = new ArrayList<>();
         Random random = new Random();
-        for (int i = 0; i < 20; ++i) {
+        for (int i = 0; i < (page < 2 ? COUNT_PER_PAGE : 5); ++i) {
             Shot shot = new Shot();
             shot.title = "shot" + i;
             shot.views_count = random.nextInt(10000);
