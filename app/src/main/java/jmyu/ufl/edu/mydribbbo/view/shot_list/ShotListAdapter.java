@@ -24,11 +24,15 @@ import jmyu.ufl.edu.mydribbbo.view.shot_detail.ShotFragment;
 class ShotListAdapter extends RecyclerView.Adapter {
 
     private List<Shot> data;
+    private LoadMoreListener loadMoreListener;
+
     private static final int VIEW_TYPE_SHOT = 1;
     private static final int VIEW_TYPE_LOADING = 2;
 
-    public ShotListAdapter(List<Shot> shots) {
+
+    public ShotListAdapter(List<Shot> shots, LoadMoreListener loadMoreListener) {
         this.data = shots;
+        this.loadMoreListener = loadMoreListener;
     }
 
     @Override
@@ -63,7 +67,7 @@ class ShotListAdapter extends RecyclerView.Adapter {
                 context.startActivity(intent);
             });
         } else if (viewType == VIEW_TYPE_LOADING) {
-            // do nothing now
+            loadMoreListener.loadMore();
         }
 
     }
@@ -76,5 +80,9 @@ class ShotListAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         return position < data.size() ? VIEW_TYPE_SHOT : VIEW_TYPE_LOADING;
+    }
+
+    public interface LoadMoreListener {
+        public void loadMore();
     }
 }
