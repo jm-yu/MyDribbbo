@@ -22,6 +22,8 @@
         <activity android:name=".view.MainActivity"/>
 
         <activity android:name=".view.shot_detail.ShotActivity" />
+
+        <activity android:name=".dribbbo.auth.AuthActivity" />
     </application>
 
 </manifest>
