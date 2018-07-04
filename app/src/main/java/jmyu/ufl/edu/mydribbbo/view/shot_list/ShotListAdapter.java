@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -59,6 +60,12 @@ class ShotListAdapter extends RecyclerView.Adapter {
             shotViewHolder.bucketCount.setText(String.valueOf(shot.buckets_count));
             shotViewHolder.viewCount.setText(String.valueOf(shot.views_count));
             shotViewHolder.image.setImageResource(R.drawable.shot_placeholder);
+            //System.out.println(shot.getImageUrl());
+
+            Picasso.with(holder.itemView.getContext())
+                    .load(shot.getImageUrl())
+                    .placeholder(R.drawable.shot_placeholder)
+                    .into(shotViewHolder.image);
 
             shotViewHolder.cover.setOnClickListener(v -> {
                 Context context = holder.itemView.getContext();

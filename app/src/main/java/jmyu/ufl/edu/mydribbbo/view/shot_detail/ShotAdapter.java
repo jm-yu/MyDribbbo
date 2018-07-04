@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.squareup.picasso.Picasso;
+
 import jmyu.ufl.edu.mydribbbo.R;
 import jmyu.ufl.edu.mydribbbo.model.Shot;
 
@@ -42,7 +44,11 @@ class ShotAdapter extends RecyclerView.Adapter {
         int viewType = getItemViewType(position);
         switch (viewType) {
             case VIEW_SHOT_TYPE_IMAGE :
-                // todo show a picture
+                System.out.println(shot.getImageUrl());
+                Picasso.with(holder.itemView.getContext())
+                        .load(shot.getImageUrl())
+                        .placeholder(R.drawable.shot_placeholder)
+                        .into(((ShotImageViewHolder) holder).image);
                 break;
             case VIEW_SHOT_TYPE_INFO :
                 ShotInfoViewHolder shotDetailViewHolder = (ShotInfoViewHolder) holder;

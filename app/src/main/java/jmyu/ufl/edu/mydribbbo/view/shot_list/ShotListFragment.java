@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -67,7 +68,6 @@ public class ShotListFragment extends Fragment {
                             public void run() {
                                 List<Shot> moreData =fakeData(adapter.getDataCount() / COUNT_PER_PAGE);
                                 adapter.append(moreData);
-                                System.out.println(moreData.size() == COUNT_PER_PAGE);
                                 adapter.setShowLoading(moreData.size() == COUNT_PER_PAGE);
                             }
                         });
@@ -89,6 +89,9 @@ public class ShotListFragment extends Fragment {
             shot.buckets_count = random.nextInt(50);
             shot.description = shot.title +  " description";
 
+            shot.images = new HashMap<>();
+            shot.images.put(Shot.IMAGE_HIDPI, imageUrls[random.nextInt(imageUrls.length)]);
+
             shot.user = new User();
             shot.user.name = shot.title + " author";
 
@@ -96,4 +99,18 @@ public class ShotListFragment extends Fragment {
         }
         return shotList;
     }
+
+    private static final String[] imageUrls = {
+            "http://35.196.58.1/yelp-business-photos/-EgKmv2dcfZPP9sKPrpFRQ.jpg",
+            "http://35.196.58.1/yelp-business-photos/kFARd0Ci3ZUlMq3wnOh7pA.jpg",
+            "http://35.196.58.1/yelp-business-photos/_ZYTeDR44RCd5TfT-0iBcQ.jpg",
+            "http://35.196.58.1/yelp-business-photos/kfARhz31OuZTDPfrCI2eLg.jpg",
+            "http://35.196.58.1/yelp-business-photos/Z-Yz_a8fAP3qImq2dKVUqg.jpg",
+            "http://35.196.58.1/yelp-business-photos/_kFSMrEdKS6XEVtubBchJg.jpg",
+            "http://35.196.58.1/yelp-business-photos/ZZdtWxptjYN1cFxPd6a5bw.jpg",
+            "http://35.196.58.1/yelp-business-photos/KFwfNcfVAk25eqIhC6C6Bg.jpg",
+            "http://35.196.58.1/yelp-business-photos/Z_zhnfy-mdFYqzlmKI7Wng.jpg",
+            "http://35.196.58.1/yelp-business-photos/kH6couimx13HIgYNgq9F2g.jpg",
+            "http://35.196.58.1/yelp-business-photos/zZjQ22iQlIAQ7C2xClvaOw.jpg"
+    };
 }
