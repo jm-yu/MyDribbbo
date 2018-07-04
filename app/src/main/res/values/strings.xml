@@ -16,5 +16,7 @@
     <string name="bucket">bucket</string>
     <string name="share">share</string>
     <string name="shot_author_picture">author picture</string>
+    <string name="activity_login_icon">login icon</string>
+    <string name="activity_login_btn_text">Log into Dribbbo</string>
 
 </resources>
