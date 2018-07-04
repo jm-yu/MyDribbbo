@@ -47,7 +47,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQ_CODE && resultCode == RESULT_OK) {
-            //todo
+            final String authCode = data.getStringExtra(AuthActivity.KEY_CODE);
+
         }
     }
 }

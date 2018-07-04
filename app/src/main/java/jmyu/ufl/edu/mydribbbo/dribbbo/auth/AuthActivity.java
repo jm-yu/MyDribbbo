@@ -1,5 +1,7 @@
 package jmyu.ufl.edu.mydribbbo.dribbbo.auth;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +22,8 @@ import jmyu.ufl.edu.mydribbbo.R;
 public class AuthActivity extends AppCompatActivity{
 
     public static final String KEY_URL = "url";
+    public static final String KEY_CODE = "code";
+
 
     @BindView(R.id.progress_bar) ProgressBar progressBar;
     @BindView(R.id.webview) WebView webView;
@@ -36,7 +40,17 @@ public class AuthActivity extends AppCompatActivity{
         setTitle("Log into Dribbbo");
 
         webView.setWebViewClient(new WebViewClient() {
-            // todo
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url.startsWith(Auth.REDIRECT_URI)){
+                    Uri uri = Uri.parse(url);
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra(KEY_CODE, uri.getQueryParameter(KEY_CODE));
+                    setResult(RESULT_OK, resultIntent);
+                    finish();
+                }
+                return super.shouldOverrideUrlLoading(view, url);
+            }
         });
 
 
