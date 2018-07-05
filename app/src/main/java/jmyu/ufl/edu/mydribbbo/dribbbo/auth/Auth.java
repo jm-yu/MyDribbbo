@@ -32,6 +32,7 @@ public class Auth {
     private static final String KEY_SCOPE = "scope";
     private static final String KEY_ACCESS_TOKEN = "access_token";
 
+    //public static final String REDIRECT_URI = "http://www.google.com"; wrong uri
     public static final String REDIRECT_URI = "https://www.google.com";
 
     private static final String SCOPE = "public+write";
