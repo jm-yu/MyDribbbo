@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +51,18 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQ_CODE && resultCode == RESULT_OK) {
             final String authCode = data.getStringExtra(AuthActivity.KEY_CODE);
-
+            Log.d("Jimmy_code", authCode);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String token = Auth.getTokenfromCode(authCode);
+                        Log.d("Jimmy_token", token);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
         }
     }
 }

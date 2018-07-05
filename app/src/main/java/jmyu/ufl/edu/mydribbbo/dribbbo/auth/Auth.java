@@ -2,6 +2,17 @@ package jmyu.ufl.edu.mydribbbo.dribbbo.auth;
 
 import android.net.Uri;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 /**
  * Created by jmyu on 7/4/18.
  */
@@ -21,9 +32,10 @@ public class Auth {
     private static final String KEY_SCOPE = "scope";
     private static final String KEY_ACCESS_TOKEN = "access_token";
 
-    public static final String REDIRECT_URI = "http://www.google.com";
+    public static final String REDIRECT_URI = "https://www.google.com";
 
     private static final String SCOPE = "public+write";
+    private static final String URI_TOKEN = "https://dribbble.com/oauth/token";
 
 
     public static String getAuthorizeUrl() {
@@ -38,5 +50,31 @@ public class Auth {
         url += "&" + KEY_SCOPE + "=" + SCOPE;
 
         return url;
+    }
+
+    public static String getTokenfromCode(String authCode) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        RequestBody postBody = new FormBody.Builder()
+                .add(KEY_CLIENT_ID, CLIENT_ID)
+                .add(KEY_CLIENT_SECRET, CLIENT_SECRET)
+                .add(KEY_CODE, authCode)
+                .add(KEY_REDIRECT_URI, REDIRECT_URI)
+                .build();
+        Request request = new Request.Builder()
+                .url(URI_TOKEN)
+                .post(postBody)
+                .build();
+        Response response = client.newCall(request).execute();
+
+        String responseString = response.body().string();
+
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(responseString);
+            return jsonObject.getString(KEY_ACCESS_TOKEN);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 }
