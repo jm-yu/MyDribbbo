@@ -1,6 +1,7 @@
 package jmyu.ufl.edu.mydribbbo.dribbbo;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import jmyu.ufl.edu.mydribbbo.model.User;
 
@@ -9,6 +10,10 @@ import jmyu.ufl.edu.mydribbbo.model.User;
  */
 
 public class Dribbbo {
+
+    private static final String SP_AUTH = "auth";
+    private static final String KEY_TOKEN = "token";
+
 
     private static String token;
     private static User user;
@@ -21,12 +26,22 @@ public class Dribbbo {
     }
 
     private static String loadToken(Context context) {
-        // todo
-        return "";
+        SharedPreferences sp = context.getApplicationContext().getSharedPreferences(SP_AUTH, Context.MODE_PRIVATE);
+        return sp.getString(KEY_TOKEN, null);
     }
 
     public static boolean isLoggedIn() {
-        // todo
-        return false;
+        return token != null;
+    }
+
+    public static void login(Context context, String token) {
+        Dribbbo.token = token;
+        storeToken(context, token);
+        //todo deal with user
+    }
+
+    private static void storeToken(Context context, String token) {
+        SharedPreferences sp = context.getApplicationContext().getSharedPreferences(SP_AUTH, Context.MODE_PRIVATE);
+        sp.edit().putString(KEY_TOKEN, token).apply();
     }
 }

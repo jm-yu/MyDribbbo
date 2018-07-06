@@ -58,6 +58,11 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         String token = Auth.getTokenfromCode(authCode);
                         Log.d("Jimmy_token", token);
+                        Dribbbo.login(LoginActivity.this, token);
+
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
