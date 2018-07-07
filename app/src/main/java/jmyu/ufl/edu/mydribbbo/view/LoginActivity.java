@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Dribbbo.init(this);
+        Log.d("Jimmy", String.valueOf(Dribbbo.isLoggedIn()));
 
         if (!Dribbbo.isLoggedIn()) {
             loginBtn.setOnClickListener(v -> {

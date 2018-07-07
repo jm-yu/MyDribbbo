@@ -21,9 +21,9 @@ public class Auth {
 
     private static final String URI_AUTHORIZE = "https://dribbble.com/oauth/authorize";
 
-    private static final String CLIENT_ID = "d5223632f3ec66514d2a4b13e0cea3ca4f71cc5a98ad597097c084d9e5520e3c";
+    private static final String CLIENT_ID = "33584da739d3d148a9df7d3985687897165db59ee33a9fef87347da969dfd302";
 
-    private static final String CLIENT_SECRET = "919769119f12b29ba8f87c93e347b8952f4a1616bbd396768b7f5109da754045";
+    private static final String CLIENT_SECRET = "a6a35c20eb62ea1043fca892683b95aeb98f60c5b716ef19f038b94a95347add";
 
     private static final String KEY_CODE = "code";
     private static final String KEY_CLIENT_ID = "client_id";
