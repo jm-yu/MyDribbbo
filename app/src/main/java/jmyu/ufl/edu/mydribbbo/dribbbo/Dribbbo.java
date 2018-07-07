@@ -7,7 +7,10 @@ import android.util.Log;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import jmyu.ufl.edu.mydribbbo.model.Shot;
 import jmyu.ufl.edu.mydribbbo.model.User;
@@ -26,7 +29,7 @@ public class Dribbbo {
 
     private static final String API_URL = "https://api.dribbble.com/v2/";
 
-    private static final String SHOTS_END_POINT = API_URL + "shots";
+    private static final String SHOTS_END_POINT = API_URL + "popular_shots";
     private static final String USER_END_POINT = API_URL + "user";
 
 
@@ -65,7 +68,11 @@ public class Dribbbo {
     public static List<Shot> getShots(int page) throws IOException {
         String url = SHOTS_END_POINT + "?page=" + page;
         Response response = makeGetRequest(url);
-        return null;
+        if (response.body().string().length() == 0) {
+            Log.d("Jimmy", "fake data generated");
+
+        }
+        return fakeData(page);
     }
 
     private static Response makeGetRequest(String url) throws IOException {
@@ -86,5 +93,41 @@ public class Dribbbo {
         return new Request.Builder().addHeader("Authorization", "Bearer " + token)
                 .url(url);
     }
+
+    private static List<Shot> fakeData(int page) {
+        List<Shot> shotList = new ArrayList<>();
+        Random random = new Random();
+        for (int i = 0; i < (page < 3 ? 12 : 6); ++i) {
+            Shot shot = new Shot();
+            shot.title = "shot" + i;
+            shot.views_count = random.nextInt(10000);
+            shot.likes_count = random.nextInt(200);
+            shot.buckets_count = random.nextInt(50);
+            shot.description = shot.title +  " description";
+
+            shot.images = new HashMap<>();
+            shot.images.put(Shot.IMAGE_HIDPI, imageUrls[random.nextInt(imageUrls.length)]);
+
+            shot.user = new User();
+            shot.user.name = shot.title + " author";
+
+            shotList.add(shot);
+        }
+        return shotList;
+    }
+
+    private static final String[] imageUrls = {
+            "http://35.196.58.1/yelp-business-photos/-EgKmv2dcfZPP9sKPrpFRQ.jpg",
+            "http://35.196.58.1/yelp-business-photos/kFARd0Ci3ZUlMq3wnOh7pA.jpg",
+            "http://35.196.58.1/yelp-business-photos/_ZYTeDR44RCd5TfT-0iBcQ.jpg",
+            "http://35.196.58.1/yelp-business-photos/kfARhz31OuZTDPfrCI2eLg.jpg",
+            "http://35.196.58.1/yelp-business-photos/Z-Yz_a8fAP3qImq2dKVUqg.jpg",
+            "http://35.196.58.1/yelp-business-photos/_kFSMrEdKS6XEVtubBchJg.jpg",
+            "http://35.196.58.1/yelp-business-photos/ZZdtWxptjYN1cFxPd6a5bw.jpg",
+            "http://35.196.58.1/yelp-business-photos/KFwfNcfVAk25eqIhC6C6Bg.jpg",
+            "http://35.196.58.1/yelp-business-photos/Z_zhnfy-mdFYqzlmKI7Wng.jpg",
+            "http://35.196.58.1/yelp-business-photos/kH6couimx13HIgYNgq9F2g.jpg",
+            "http://35.196.58.1/yelp-business-photos/zZjQ22iQlIAQ7C2xClvaOw.jpg"
+    };
 
 }
