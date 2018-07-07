@@ -1,6 +1,7 @@
 package jmyu.ufl.edu.mydribbbo.dribbbo.auth;
 
 import android.net.Uri;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +24,7 @@ public class Auth {
 
     private static final String CLIENT_ID = "33584da739d3d148a9df7d3985687897165db59ee33a9fef87347da969dfd302";
 
-    private static final String CLIENT_SECRET = "919769119f12b29ba8f87c93e347b8952f4a1616bbd396768b7f5109da754045";
+    private static final String CLIENT_SECRET = "a6a35c20eb62ea1043fca892683b95aeb98f60c5b716ef19f038b94a95347add";
 
     private static final String KEY_CODE = "code";
     private static final String KEY_CLIENT_ID = "client_id";
@@ -68,6 +69,7 @@ public class Auth {
         Response response = client.newCall(request).execute();
 
         String responseString = response.body().string();
+        Log.d("Jimmy", responseString);
 
         JSONObject jsonObject = null;
         try {

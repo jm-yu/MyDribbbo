@@ -31,6 +31,11 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="AppTheme.TextView.White" parent="AppTheme.TextView">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
     <style name="AppTheme.TextView.2" parent="AppTheme.TextView">
         <item name="android:textSize">17sp</item>
     </style>

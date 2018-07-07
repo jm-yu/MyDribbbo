@@ -130,4 +130,8 @@ public class Dribbbo {
             "http://35.196.58.1/yelp-business-photos/zZjQ22iQlIAQ7C2xClvaOw.jpg"
     };
 
+    public static void logout(Context context) {
+        storeToken(context, null);
+        token = null;
+    }
 }
