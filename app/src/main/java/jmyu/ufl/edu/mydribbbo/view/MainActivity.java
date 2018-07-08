@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.BindView;
@@ -91,6 +92,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupNavHeader() {
         View headerView = navigationView.getHeaderView(0);
+
+        ((TextView) headerView.findViewById(R.id.nav_header_user_name)).setText(
+                Dribbbo.getCurrentUser().name);
 
         headerView.findViewById(R.id.nav_header_logout).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -58,8 +58,7 @@ public class Dribbbo {
     }
 
     public static boolean isLoggedIn() {
-//        return token != null;
-        return false;
+        return token != null;
     }
 
     public static void login(Context context, String token) throws IOException {
@@ -149,5 +148,9 @@ public class Dribbbo {
         token = null;
         storeUser(context, null);
         user = null;
+    }
+
+    public static User getCurrentUser() {
+        return user;
     }
 }
