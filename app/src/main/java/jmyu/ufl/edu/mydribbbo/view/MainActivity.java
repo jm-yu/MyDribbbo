@@ -10,8 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -95,6 +98,14 @@ public class MainActivity extends AppCompatActivity {
 
         ((TextView) headerView.findViewById(R.id.nav_header_user_name)).setText(
                 Dribbbo.getCurrentUser().name);
+
+//        ((ImageView) headerView.findViewById(R.id.nav_header_user_picture))
+//                .setImageURI(Uri.parse(Dribbbo.getCurrentUser().avatar_url));
+
+        Picasso.with(this)
+                .load(Dribbbo.getCurrentUser().avatar_url)
+                .placeholder(R.drawable.shot_placeholder)
+                .into((ImageView)headerView.findViewById(R.id.nav_header_user_picture));
 
         headerView.findViewById(R.id.nav_header_logout).setOnClickListener(new View.OnClickListener() {
             @Override
