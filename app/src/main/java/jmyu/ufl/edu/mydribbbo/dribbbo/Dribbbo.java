@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.Random;
 
 import jmyu.ufl.edu.mydribbbo.model.Shot;
 import jmyu.ufl.edu.mydribbbo.model.User;
+import jmyu.ufl.edu.mydribbbo.utils.ModelUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -31,6 +33,7 @@ public class Dribbbo {
 
     private static final String SHOTS_END_POINT = API_URL + "popular_shots";
     private static final String USER_END_POINT = API_URL + "user";
+    private static final String KEY_USER = "user";
 
 
     private static String token;
@@ -41,8 +44,12 @@ public class Dribbbo {
         client = new OkHttpClient();
         token = loadToken(context);
         if (token != null) {
-            // load user
+            user = loadUser(context);
         }
+    }
+
+    private static User loadUser(Context context) {
+        return ModelUtils.read(context, KEY_USER, new TypeToken<User>(){});
     }
 
     private static String loadToken(Context context) {
@@ -51,13 +58,17 @@ public class Dribbbo {
     }
 
     public static boolean isLoggedIn() {
-        return token != null;
+//        return token != null;
+        return false;
     }
 
-    public static void login(Context context, String token) {
+    public static void login(Context context, String token) throws IOException {
         Dribbbo.token = token;
         storeToken(context, token);
-        //todo deal with user
+
+        Dribbbo.user = getUser();
+        storeUser(context, user);
+        Log.d("Jimmy", user.name);
     }
 
     private static void storeToken(Context context, String token) {
@@ -65,7 +76,9 @@ public class Dribbbo {
         sp.edit().putString(KEY_TOKEN, token).apply();
     }
 
-
+    public static void storeUser(Context context, User user) {
+        ModelUtils.save(context, KEY_USER, user);
+    }
     public static List<Shot> getShots(int page) throws IOException {
         String url = SHOTS_END_POINT + "?page=" + page;
         Response response = makeGetRequest(url);
@@ -85,9 +98,9 @@ public class Dribbbo {
         return client.newCall(request).execute();
     }
 
-    public static void getUser() throws IOException, JsonSyntaxException {
+    public static User getUser() throws IOException, JsonSyntaxException {
         Response response =  makeGetRequest(USER_END_POINT);
-        Log.d("Jimmy_response", response.body().string());
+        return ModelUtils.toObject(response.body().string(), new TypeToken<User>(){});
     }
 
     private static Request.Builder authRequestBuilder(String url) {
@@ -134,5 +147,7 @@ public class Dribbbo {
     public static void logout(Context context) {
         storeToken(context, null);
         token = null;
+        storeUser(context, null);
+        user = null;
     }
 }
