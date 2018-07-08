@@ -12,13 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jmyu.ufl.edu.mydribbbo.R;
 import jmyu.ufl.edu.mydribbbo.model.Shot;
+import jmyu.ufl.edu.mydribbbo.utils.ModelUtils;
 
 /**
  * Created by jmyu on 6/29/18.
@@ -47,8 +47,7 @@ public class ShotFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        Gson gson = new Gson();
-        Shot shot = gson.fromJson(getArguments().getString(KEY_SHOT), new TypeToken<Shot>(){}.getType());
+        Shot shot = ModelUtils.toObject(getArguments().getString(KEY_SHOT), new TypeToken<Shot>(){});
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(new ShotAdapter(shot));
     }

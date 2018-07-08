@@ -65,6 +65,7 @@ public class Dribbbo {
         sp.edit().putString(KEY_TOKEN, token).apply();
     }
 
+
     public static List<Shot> getShots(int page) throws IOException {
         String url = SHOTS_END_POINT + "?page=" + page;
         Response response = makeGetRequest(url);

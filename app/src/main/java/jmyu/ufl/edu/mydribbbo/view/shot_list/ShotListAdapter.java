@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 
@@ -15,6 +14,7 @@ import java.util.List;
 
 import jmyu.ufl.edu.mydribbbo.R;
 import jmyu.ufl.edu.mydribbbo.model.Shot;
+import jmyu.ufl.edu.mydribbbo.utils.ModelUtils;
 import jmyu.ufl.edu.mydribbbo.view.shot_detail.ShotActivity;
 import jmyu.ufl.edu.mydribbbo.view.shot_detail.ShotFragment;
 
@@ -70,8 +70,7 @@ class ShotListAdapter extends RecyclerView.Adapter {
             shotViewHolder.cover.setOnClickListener(v -> {
                 Context context = holder.itemView.getContext();
                 Intent intent = new Intent(context, ShotActivity.class);
-                Gson gson = new Gson();
-                intent.putExtra(ShotFragment.KEY_SHOT, gson.toJson(shot, new TypeToken<Shot>(){}.getType()));
+                intent.putExtra(ShotFragment.KEY_SHOT, ModelUtils.toString(shot, new TypeToken<Shot>(){}));
                 intent.putExtra(ShotActivity.KEY_SHOT_TITLE, shot.title);
                 context.startActivity(intent);
             });
