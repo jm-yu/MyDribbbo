@@ -60,8 +60,8 @@ public class Dribbbo {
     }
 
     public static boolean isLoggedIn() {
-//        return token != null;
-        return false;
+        return token != null;
+//        return false;
     }
 
     public static void login(Context context, String token) throws IOException {
@@ -118,7 +118,7 @@ public class Dribbbo {
         Random random = new Random();
         for (int i = 0; i < (page < 3 ? 12 : 6); ++i) {
             Shot shot = new Shot();
-            shot.title = "shot" + i;
+            shot.title = "shot" + String.valueOf(i + (page - 1) * 12);
             shot.views_count = random.nextInt(10000);
             shot.likes_count = random.nextInt(200);
             shot.buckets_count = random.nextInt(50);

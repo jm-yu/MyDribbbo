@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,6 +30,7 @@ import jmyu.ufl.edu.mydribbbo.model.Bucket;
 public class BucketListFragment extends Fragment {
 
     private static final int COUNT_PER_PAGE = 12;
+    public static final int REQ_CODE_NEW_BUCKET = 100;
     @BindView(R.id.recycler_view_fab) RecyclerView recyclerView;
     @BindView(R.id.fab) FloatingActionButton fab;
     BucketListAdapter adapter;
@@ -57,7 +57,8 @@ public class BucketListFragment extends Fragment {
             }
         });
         fab.setOnClickListener(v -> {
-            Toast.makeText(getActivity(), "fab clicked", Toast.LENGTH_SHORT).show();
+            NewBucketDialogFragment dialogFragment = NewBucketDialogFragment.newInstance();
+            dialogFragment.show(getFragmentManager(), NewBucketDialogFragment.TAG);
         });
         recyclerView.setAdapter(adapter);
     }

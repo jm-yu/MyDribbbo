@@ -21,5 +21,7 @@
     <string name="logout">log out</string>
     <string name="new_bucket_name">Bucket Name</string>
     <string name="new_bucket_description">Bucket Description</string>
+    <string name="bucket_create">Create</string>
+    <string name="bucket_create_cancel">Cancel</string>
 
 </resources>
