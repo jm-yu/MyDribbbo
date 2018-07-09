@@ -19,5 +19,7 @@
     <string name="activity_login_icon">login icon</string>
     <string name="activity_login_btn_text">Log into Dribbbo</string>
     <string name="logout">log out</string>
+    <string name="new_bucket_name">Bucket Name</string>
+    <string name="new_bucket_description">Bucket Description</string>
 
 </resources>
