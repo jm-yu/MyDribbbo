@@ -1,9 +1,11 @@
 package jmyu.ufl.edu.mydribbbo.view.bucket_list;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,13 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jmyu.ufl.edu.mydribbbo.R;
+import jmyu.ufl.edu.mydribbbo.dribbbo.Dribbbo;
 import jmyu.ufl.edu.mydribbbo.model.Bucket;
 
 /**
@@ -27,8 +30,10 @@ import jmyu.ufl.edu.mydribbbo.model.Bucket;
 
 public class BucketListFragment extends Fragment {
 
+    private static final int COUNT_PER_PAGE = 12;
     @BindView(R.id.recycler_view_fab) RecyclerView recyclerView;
     @BindView(R.id.fab) FloatingActionButton fab;
+    BucketListAdapter adapter;
 
     public static BucketListFragment newInstance() {
         return new BucketListFragment();
@@ -45,21 +50,47 @@ public class BucketListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new BucketListAdapter(fakeData()));
+        adapter = new BucketListAdapter(new ArrayList<>(), new BucketListAdapter.LoadMoreListener() {
+            @Override
+            public void loadMore() {
+                new LoadBucketTask(adapter.getDataCount()/ COUNT_PER_PAGE + 1).execute();
+            }
+        });
         fab.setOnClickListener(v -> {
             Toast.makeText(getActivity(), "fab clicked", Toast.LENGTH_SHORT).show();
         });
+        recyclerView.setAdapter(adapter);
     }
 
-    private List<Bucket> fakeData() {
-        List<Bucket> bucketList = new ArrayList<>();
-        Random random = new Random();
-        for (int i = 0; i < 20; ++i) {
-            Bucket bucket = new Bucket();
-            bucket.name = "Bucket" + i;
-            bucket.shots_count = random.nextInt(10);
-            bucketList.add(bucket);
+
+    private class LoadBucketTask extends AsyncTask<Void, Void, List<Bucket>> {
+
+        private int page;
+
+        public LoadBucketTask(int page) {
+            this.page = page;
         }
-        return bucketList;
+
+        @Override
+        protected List<Bucket> doInBackground(Void... voids) {
+            try {
+                return Dribbbo.getBuckets(page);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Bucket> buckets) {
+            if (buckets != null) {
+                if (buckets.size() < COUNT_PER_PAGE) {
+                    adapter.setShowLoading(false);
+                }
+                adapter.append(buckets);
+            } else {
+                Snackbar.make(getView(), "Error!", Snackbar.LENGTH_LONG).show();
+            }
+        }
     }
 }

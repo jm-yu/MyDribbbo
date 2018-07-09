@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import jmyu.ufl.edu.mydribbbo.model.Bucket;
 import jmyu.ufl.edu.mydribbbo.model.Shot;
 import jmyu.ufl.edu.mydribbbo.model.User;
 import jmyu.ufl.edu.mydribbbo.utils.ModelUtils;
@@ -34,6 +35,7 @@ public class Dribbbo {
     private static final String SHOTS_END_POINT = API_URL + "popular_shots";
     private static final String USER_END_POINT = API_URL + "user";
     private static final String KEY_USER = "user";
+    private static final String BUCKETS_END_POINT = API_URL + "buckets";
 
 
     private static String token;
@@ -83,11 +85,13 @@ public class Dribbbo {
     public static List<Shot> getShots(int page) throws IOException {
         String url = SHOTS_END_POINT + "?page=" + page;
         Response response = makeGetRequest(url);
-        if (response.body().string().length() == 0) {
-            Log.d("Jimmy", "fake data generated");
-
+        Log.d("Jimmy", "fake shot data generated");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        return fakeData(page);
+        return fakeShotData(page);
     }
 
     private static Response makeGetRequest(String url) throws IOException {
@@ -109,7 +113,7 @@ public class Dribbbo {
                 .url(url);
     }
 
-    private static List<Shot> fakeData(int page) {
+    private static List<Shot> fakeShotData(int page) {
         List<Shot> shotList = new ArrayList<>();
         Random random = new Random();
         for (int i = 0; i < (page < 3 ? 12 : 6); ++i) {
@@ -154,5 +158,30 @@ public class Dribbbo {
 
     public static User getCurrentUser() {
         return user;
+    }
+
+    public static List<Bucket> getBuckets(int page) throws IOException {
+        String url = BUCKETS_END_POINT + "?page=" + page;
+        Response response = makeGetRequest(url);
+        Log.d("Jimmy", "fake bucket data generated");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return fakeBucketData(page);
+    }
+
+    private static List<Bucket> fakeBucketData(int page) {
+        List<Bucket> bucketList = new ArrayList<>();
+        Random random = new Random();
+        for (int i = 0; i < (page < 3 ? 12 : 6); ++i) {
+            Bucket bucket = new Bucket();
+            bucket.name = "Bucket" + String.valueOf(i + (page - 1) * 12);
+            bucket.shots_count = random.nextInt(10);
+            bucketList.add(bucket);
+            bucket.isChosen = (random.nextInt(10) % 2 == 0) ? false : true;
+        }
+        return bucketList;
     }
 }
