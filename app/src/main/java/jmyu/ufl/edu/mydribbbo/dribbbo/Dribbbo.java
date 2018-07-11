@@ -36,13 +36,20 @@ public class Dribbbo {
     private static final String USER_END_POINT = API_URL + "user";
     private static final String KEY_USER = "user";
     private static final String BUCKETS_END_POINT = API_URL + "buckets";
+    private static final String SP_BUCKET = "bucket data";
+    private static final String KEY_BUCKET = "bucket";
 
 
     private static String token;
     private static User user;
     private static OkHttpClient client;
+    private static List<Bucket> buckets = new ArrayList<>();
+    private static Context context;
+
 
     public static void init(Context context) {
+        Dribbbo.buckets = ModelUtils.read(context, KEY_BUCKET, new TypeToken<List<Bucket>>(){});
+        Dribbbo.context = context;
         client = new OkHttpClient();
         token = loadToken(context);
         if (token != null) {
@@ -174,14 +181,28 @@ public class Dribbbo {
 
     private static List<Bucket> fakeBucketData(int page) {
         List<Bucket> bucketList = new ArrayList<>();
-        Random random = new Random();
-        for (int i = 0; i < (page < 3 ? 12 : 6); ++i) {
-            Bucket bucket = new Bucket();
-            bucket.name = "Bucket" + String.valueOf(i + (page - 1) * 12);
-            bucket.shots_count = random.nextInt(10);
-            bucketList.add(bucket);
-            bucket.isChosen = (random.nextInt(10) % 2 == 0) ? false : true;
+        if (buckets.size() == 0) {
+            Random random = new Random();
+            for (int i = 0; i < (page < 3 ? 12 : 6); ++i) {
+                Bucket bucket = new Bucket();
+                bucket.name = "Bucket" + String.valueOf(i + (page - 1) * 12);
+                bucket.shots_count = random.nextInt(10);
+                bucketList.add(bucket);
+                bucket.isChosen = (random.nextInt(10) % 2 == 0) ? false : true;
+            }
+
+            buckets.addAll(bucketList);
+            ModelUtils.save(context, KEY_BUCKET, buckets);
+        } else {
+            for (int i = 0; i < (page < 3 ? 12 : 6); ++i) {
+                int index = (page - 1) * 12 + i;
+                bucketList.add(buckets.get(index));
+            }
         }
         return bucketList;
+    }
+
+    public static void newBucket(String bucketName, String bucketDescription) {
+        // todo
     }
 }
