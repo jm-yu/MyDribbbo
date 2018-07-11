@@ -16,8 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.JsonSyntaxException;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -61,6 +64,7 @@ public class BucketListFragment extends Fragment {
         });
         fab.setOnClickListener(v -> {
             NewBucketDialogFragment dialogFragment = NewBucketDialogFragment.newInstance();
+            dialogFragment.setTargetFragment(BucketListFragment.this, REQ_CODE_NEW_BUCKET);
             dialogFragment.show(getFragmentManager(), NewBucketDialogFragment.TAG);
         });
         recyclerView.setAdapter(adapter);
@@ -72,7 +76,7 @@ public class BucketListFragment extends Fragment {
             String bucketName = data.getStringExtra(NewBucketDialogFragment.KEY_BUCKET_NAME);
             String bucketDescription = data.getStringExtra(NewBucketDialogFragment.KEY_BUCKET_DESCRIPTION);
             if (!TextUtils.isEmpty(bucketName)) {
-                Dribbbo.newBucket(bucketName, bucketDescription);
+                new NewBucketTask(bucketName, bucketDescription).execute();
             }
         }
     }
@@ -107,5 +111,34 @@ public class BucketListFragment extends Fragment {
             }
         }
 
+    }private class NewBucketTask extends AsyncTask<Void, Void, Bucket> {
+
+        private String name;
+        private String description;
+
+        private NewBucketTask(String name, String description) {
+            this.name = name;
+            this.description = description;
+        }
+
+        @Override
+        protected Bucket doInBackground(Void... params) {
+            try {
+                return Dribbbo.newBucket(name, description);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Bucket newBucket) {
+            // this method is executed on UI thread!!!!
+            if (newBucket != null) {
+                adapter.prepend(Collections.singletonList(newBucket));
+            } else {
+                Snackbar.make(getView(), "Error!", Snackbar.LENGTH_LONG).show();
+            }
+        }
     }
 }

@@ -2,13 +2,13 @@ package jmyu.ufl.edu.mydribbbo.view.bucket_list;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -49,6 +49,7 @@ public class NewBucketDialogFragment extends DialogFragment {
                     Intent result = new Intent();
                     result.putExtra(KEY_BUCKET_NAME, bucketName.getText().toString());
                     result.putExtra(KEY_BUCKET_DESCRIPTION, bucketDescription.getText().toString());
+                    System.out.println(getTargetFragment());
                     getTargetFragment().onActivityResult(BucketListFragment.REQ_CODE_NEW_BUCKET,
                             Activity.RESULT_OK,
                             result);

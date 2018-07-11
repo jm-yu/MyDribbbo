@@ -202,7 +202,12 @@ public class Dribbbo {
         return bucketList;
     }
 
-    public static void newBucket(String bucketName, String bucketDescription) {
-        // todo
+    public static Bucket newBucket(String bucketName, String bucketDescription) {
+        Bucket bucket = new Bucket();
+        bucket.name = bucketName;
+        bucketDescription = bucketDescription;
+        buckets.add(0, bucket);
+        ModelUtils.save(context, KEY_BUCKET, buckets);
+        return bucket;
     }
 }

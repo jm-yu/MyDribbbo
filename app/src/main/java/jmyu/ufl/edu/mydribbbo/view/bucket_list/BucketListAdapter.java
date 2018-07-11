@@ -86,6 +86,11 @@ class BucketListAdapter extends RecyclerView.Adapter {
         return data.size();
     }
 
+    public void prepend(List<Bucket> buckets) {
+        data.addAll(0, buckets);
+        notifyDataSetChanged();
+    }
+
     public interface LoadMoreListener {
         public void loadMore();
     }
