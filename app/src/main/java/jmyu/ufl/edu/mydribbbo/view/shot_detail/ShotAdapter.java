@@ -61,7 +61,7 @@ class ShotAdapter extends RecyclerView.Adapter {
             case VIEW_SHOT_TYPE_INFO :
                 ShotInfoViewHolder shotDetailViewHolder = (ShotInfoViewHolder) holder;
 
-                shotDetailViewHolder.title.setText(shot.title);
+                shotDetailViewHolder.title.setText(shot.id);
                 shotDetailViewHolder.authorName.setText(shot.user.name);
                 shotDetailViewHolder.description.setText(shot.description);
                 shotDetailViewHolder.likeCount.setText(String.valueOf(shot.likes_count));

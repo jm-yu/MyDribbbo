@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import jmyu.ufl.edu.mydribbbo.model.Bucket;
@@ -40,6 +41,8 @@ public class Dribbbo {
     private static final String BUCKETS_END_POINT = API_URL + "buckets";
     private static final String SP_BUCKET = "bucket data";
     private static final String KEY_BUCKET = "bucket";
+    private static final String KEY_SHOT_BUCKET_MAP = "shot_bucket_map" ;
+    private static final String KEY_BUCKET_SHOT_MAP = "bucket_shot_map";
 
 
     private static String token;
@@ -47,14 +50,18 @@ public class Dribbbo {
     private static OkHttpClient client;
     private static List<Bucket> buckets;
     private static List<Shot> shots;
+    private static Map<String, List<String>> shot_bucket_ids;
+    private static Map<String, List<String>> bucket_shot_ids;
+
     private static Context context;
     private static List<String> userBucketIDs;
 
 
     public static void init(Context context) {
         Dribbbo.buckets = ModelUtils.read(context, KEY_BUCKET, new TypeToken<List<Bucket>>(){});
+        System.out.println(buckets);
         if (buckets == null) {
-            // when buckets size is 0, it will automatically generate fake buckets data.
+            // when buckets size is zero, it will automatically generate fake buckets data.
             buckets = new ArrayList<>();
         }
         Dribbbo.shots = ModelUtils.read(context, KEY_SHOT, new TypeToken<List<Shot>>(){});
@@ -62,6 +69,16 @@ public class Dribbbo {
             // when buckets size is 0, it will automatically generate fake buckets data.
             shots = new ArrayList<>();
         }
+        Dribbbo.shot_bucket_ids = ModelUtils.read(context, KEY_SHOT_BUCKET_MAP, new TypeToken<Map<String, List<String>>>(){});
+        if (shot_bucket_ids == null) {
+            shot_bucket_ids = new HashMap<>();
+        }
+        Dribbbo.bucket_shot_ids = ModelUtils.read(context, KEY_BUCKET_SHOT_MAP, new TypeToken<Map<String, List<String>>>(){});
+        if (bucket_shot_ids == null) {
+            bucket_shot_ids = new HashMap<>();
+        }
+
+        shot_bucket_ids = new HashMap<>();
         Dribbbo.context = context;
         client = new OkHttpClient();
         token = loadToken(context);
@@ -139,6 +156,7 @@ public class Dribbbo {
             Random random = new Random();
             for (int i = 0; i < (page < 3 ? 12 : 6); ++i) {
                 Shot shot = new Shot();
+                shot.id = "shot#" + String.valueOf(random.nextInt(10000));
                 shot.title = "shot" + String.valueOf(i + (page - 1) * 12);
                 shot.views_count = random.nextInt(10000);
                 shot.likes_count = random.nextInt(200);
@@ -152,9 +170,11 @@ public class Dribbbo {
                 shot.user.name = shot.title + " author";
 
                 shotList.add(shot);
+                shot_bucket_ids.put(shot.id, new ArrayList<>());
             }
             shots.addAll(shotList);
             ModelUtils.save(context, KEY_SHOT, shots);
+            ModelUtils.save(context, KEY_SHOT_BUCKET_MAP, shot_bucket_ids);
         } else {
             for (int i = 0; i < (page < 3 ? 12 : 6); ++i) {
                 int index = (page - 1) * 12 + i;
@@ -207,14 +227,17 @@ public class Dribbbo {
             Random random = new Random();
             for (int i = 0; i < (page < 3 ? 12 : 6); ++i) {
                 Bucket bucket = new Bucket();
+                bucket.id = "bucket#" + String.valueOf(random.nextInt(10000));
                 bucket.name = "Bucket" + String.valueOf(i + (page - 1) * 12);
                 bucket.shots_count = random.nextInt(10);
                 bucketList.add(bucket);
                 bucket.isChosen = false;
+                bucket_shot_ids.put(bucket.id, new ArrayList<String>());
             }
 
             buckets.addAll(bucketList);
             ModelUtils.save(context, KEY_BUCKET, buckets);
+            ModelUtils.save(context, KEY_BUCKET_SHOT_MAP, bucket_shot_ids);
         } else {
             for (int i = 0; i < (page < 3 ? 12 : 6); ++i) {
                 int index = (page - 1) * 12 + i;
