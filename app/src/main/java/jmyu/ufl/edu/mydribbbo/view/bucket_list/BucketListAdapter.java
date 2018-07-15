@@ -1,9 +1,12 @@
 package jmyu.ufl.edu.mydribbbo.view.bucket_list;
 
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -20,14 +23,16 @@ class BucketListAdapter extends RecyclerView.Adapter {
     private List<Bucket> data;
     LoadMoreListener loadMoreListener;
     boolean showLoading;
+    boolean isChosenMode;
 
     private static final int VIEW_TYPE_BUCKET = 1;
     private static final int VIEW_TYPE_LOADING = 2;
 
-    public BucketListAdapter(List<Bucket> buckets, LoadMoreListener loadMoreListener) {
+    public BucketListAdapter(List<Bucket> buckets, LoadMoreListener loadMoreListener, boolean isChosenMode) {
         this.loadMoreListener = loadMoreListener;
         this.data = buckets;
-        showLoading = true;
+        this.showLoading = true;
+        this.isChosenMode = isChosenMode;
     }
 
     @Override
@@ -48,14 +53,42 @@ class BucketListAdapter extends RecyclerView.Adapter {
         int viewType = getItemViewType(position);
         if (viewType == VIEW_TYPE_BUCKET) {
             Bucket bucket = data.get(position);
+            BucketViewHolder bucketViewHolder = (BucketViewHolder) holder;
+            Context context = holder.itemView.getContext();
 
             String bucketShotCountString = MessageFormat.format(
                     holder.itemView.getContext().getResources().getString(R.string.shot_count),
                     bucket.shots_count);
 
-            BucketViewHolder bucketViewHolder = (BucketViewHolder) holder;
             bucketViewHolder.bucketName.setText(bucket.name);
             bucketViewHolder.bucketShotCount.setText(bucketShotCountString);
+
+            if (isChosenMode) {
+                bucketViewHolder.bucketChosen.setVisibility(View.VISIBLE);
+                bucketViewHolder.bucketChosen.setImageDrawable(
+                        bucket.isChosen
+                                ? ContextCompat.getDrawable(context, R.drawable.ic_check_box_black_24dp)
+                                : ContextCompat.getDrawable(context, R.drawable.ic_check_box_outline_blank_black_24dp));
+                bucketViewHolder.bucketLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bucket.isChosen = !bucket.isChosen;
+                        notifyItemChanged(position);
+                    }
+                });
+            } else {
+                bucketViewHolder.bucketChosen.setVisibility(View.GONE);
+                bucketViewHolder.bucketLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "show shots in this bucket", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+
+
+
         } else if (viewType == VIEW_TYPE_LOADING) {
             loadMoreListener.loadMore();
         }

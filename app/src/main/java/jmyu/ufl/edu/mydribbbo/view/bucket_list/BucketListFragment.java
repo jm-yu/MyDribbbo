@@ -40,9 +40,20 @@ public class BucketListFragment extends Fragment {
     @BindView(R.id.recycler_view_fab) RecyclerView recyclerView;
     @BindView(R.id.fab) FloatingActionButton fab;
     BucketListAdapter adapter;
+    private boolean isChosenMode;
+    private List<String> chosenBucketIds;
 
-    public static BucketListFragment newInstance() {
-        return new BucketListFragment();
+    public static final String KEY_CHOOSING_MODE = "choose_mode";
+    public static final String KEY_CHOSEN_BUCKET_IDS = "chosen_bucket_ids";
+
+    public static BucketListFragment newInstance(boolean isChosenMode, ArrayList<String> chosenIDs) {
+        Bundle args = new Bundle();
+        args.putBoolean(KEY_CHOOSING_MODE, isChosenMode);
+        args.putStringArrayList(KEY_CHOSEN_BUCKET_IDS, chosenIDs);
+
+        BucketListFragment fragment = new BucketListFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Nullable
@@ -61,7 +72,7 @@ public class BucketListFragment extends Fragment {
             public void loadMore() {
                 new LoadBucketTask(adapter.getDataCount()/ COUNT_PER_PAGE + 1).execute();
             }
-        });
+        }, isChosenMode);
         fab.setOnClickListener(v -> {
             NewBucketDialogFragment dialogFragment = NewBucketDialogFragment.newInstance();
             dialogFragment.setTargetFragment(BucketListFragment.this, REQ_CODE_NEW_BUCKET);
