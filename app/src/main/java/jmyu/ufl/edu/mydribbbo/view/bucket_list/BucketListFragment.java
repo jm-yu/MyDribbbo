@@ -66,6 +66,14 @@ public class BucketListFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        isChosenMode = getArguments().getBoolean(KEY_CHOOSING_MODE);
+
+        if (isChosenMode) {
+            chosenBucketIds = getArguments().getStringArrayList(KEY_CHOSEN_BUCKET_IDS);
+            if (chosenBucketIds == null) {
+                chosenBucketIds = new ArrayList<>();
+            }
+        }
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new BucketListAdapter(new ArrayList<>(), new BucketListAdapter.LoadMoreListener() {
             @Override

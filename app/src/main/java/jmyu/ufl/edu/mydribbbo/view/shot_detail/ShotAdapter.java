@@ -1,5 +1,7 @@
 package jmyu.ufl.edu.mydribbbo.view.shot_detail;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import com.squareup.picasso.Picasso;
 
 import jmyu.ufl.edu.mydribbbo.R;
 import jmyu.ufl.edu.mydribbbo.model.Shot;
+import jmyu.ufl.edu.mydribbbo.view.bucket_list.ChooseBucketActivity;
 
 /**
  * Created by jmyu on 6/29/18.
@@ -59,6 +62,13 @@ class ShotAdapter extends RecyclerView.Adapter {
                 shotDetailViewHolder.likeCount.setText(String.valueOf(shot.likes_count));
                 shotDetailViewHolder.bucketCount.setText(String.valueOf(shot.buckets_count));
                 shotDetailViewHolder.viewCount.setText(String.valueOf(shot.views_count));
+
+                shotDetailViewHolder.bucketButton.setOnClickListener((v) -> {
+                    Context context = v.getContext();
+                    Intent intent = new Intent(context, ChooseBucketActivity.class);
+                    // TODO: we need to pass in the chosen bucket ids here
+                    context.startActivity(intent);
+                });
                 break;
         }
 

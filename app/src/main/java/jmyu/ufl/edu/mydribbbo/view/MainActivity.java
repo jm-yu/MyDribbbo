@@ -16,8 +16,6 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jmyu.ufl.edu.mydribbbo.R;
@@ -68,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                                 setTitle(R.string.title_likes);
                                 break;
                             case R.id.drawer_item_buckets:
-                                fragment = BucketListFragment.newInstance(false, new ArrayList<>());
+                                fragment = BucketListFragment.newInstance(false, null);
                                 Toast.makeText(MainActivity.this, "3", Toast.LENGTH_SHORT).show();
 
                                 setTitle(R.string.title_buckets);
