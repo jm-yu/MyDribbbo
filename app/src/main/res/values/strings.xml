@@ -23,5 +23,6 @@
     <string name="new_bucket_description">Bucket Description</string>
     <string name="bucket_create">Create</string>
     <string name="bucket_create_cancel">Cancel</string>
+    <string name="save">Save</string>
 
 </resources>

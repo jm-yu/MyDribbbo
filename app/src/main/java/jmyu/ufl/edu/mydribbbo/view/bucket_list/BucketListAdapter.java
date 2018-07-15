@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import jmyu.ufl.edu.mydribbbo.R;
@@ -122,6 +123,10 @@ class BucketListAdapter extends RecyclerView.Adapter {
     public void prepend(List<Bucket> buckets) {
         data.addAll(0, buckets);
         notifyDataSetChanged();
+    }
+
+    public ArrayList<String> getSelectedBucketIds() {
+        return new ArrayList<>();
     }
 
     public interface LoadMoreListener {

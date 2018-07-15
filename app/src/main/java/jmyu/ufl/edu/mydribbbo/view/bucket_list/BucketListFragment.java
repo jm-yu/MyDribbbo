@@ -13,6 +13,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -98,6 +101,33 @@ public class BucketListFragment extends Fragment {
                 new NewBucketTask(bucketName, bucketDescription).execute();
             }
         }
+        if (requestCode == REQ_CODE_NEW_BUCKET && resultCode == Activity.RESULT_OK) {
+            String bucketName = data.getStringExtra(NewBucketDialogFragment.KEY_BUCKET_NAME);
+            String bucketDescription = data.getStringExtra(NewBucketDialogFragment.KEY_BUCKET_DESCRIPTION);
+            if (!TextUtils.isEmpty(bucketName)) {
+                new NewBucketTask(bucketName, bucketDescription).execute();
+            }
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (isChosenMode) {
+            inflater.inflate(R.menu.bucket_list_chosen_mode_menu, menu);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.save) {
+            ArrayList<String> chosenBucketIds = adapter.getSelectedBucketIds();
+            Intent result = new Intent();
+            result.putStringArrayListExtra(KEY_CHOSEN_BUCKET_IDS, chosenBucketIds);
+            getActivity().setResult(Activity.RESULT_OK, result);
+            getActivity().finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private class LoadBucketTask extends AsyncTask<Void, Void, List<Bucket>> {

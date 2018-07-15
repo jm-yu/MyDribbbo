@@ -21,6 +21,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static jmyu.ufl.edu.mydribbbo.view.shot_detail.ShotFragment.KEY_SHOT;
+
 /**
  * Created by jmyu on 7/4/18.
  */
@@ -43,12 +45,23 @@ public class Dribbbo {
     private static String token;
     private static User user;
     private static OkHttpClient client;
-    private static List<Bucket> buckets = new ArrayList<>();
+    private static List<Bucket> buckets;
+    private static List<Shot> shots;
     private static Context context;
+    private static List<String> userBucketIDs;
 
 
     public static void init(Context context) {
         Dribbbo.buckets = ModelUtils.read(context, KEY_BUCKET, new TypeToken<List<Bucket>>(){});
+        if (buckets == null) {
+            // when buckets size is 0, it will automatically generate fake buckets data.
+            buckets = new ArrayList<>();
+        }
+        Dribbbo.shots = ModelUtils.read(context, KEY_SHOT, new TypeToken<List<Shot>>(){});
+        if (shots == null) {
+            // when buckets size is 0, it will automatically generate fake buckets data.
+            shots = new ArrayList<>();
+        }
         Dribbbo.context = context;
         client = new OkHttpClient();
         token = loadToken(context);
@@ -67,8 +80,8 @@ public class Dribbbo {
     }
 
     public static boolean isLoggedIn() {
-        return token != null;
-//        return false;
+//        return token != null;
+        return false;
     }
 
     public static void login(Context context, String token) throws IOException {
@@ -122,22 +135,31 @@ public class Dribbbo {
 
     private static List<Shot> fakeShotData(int page) {
         List<Shot> shotList = new ArrayList<>();
-        Random random = new Random();
-        for (int i = 0; i < (page < 3 ? 12 : 6); ++i) {
-            Shot shot = new Shot();
-            shot.title = "shot" + String.valueOf(i + (page - 1) * 12);
-            shot.views_count = random.nextInt(10000);
-            shot.likes_count = random.nextInt(200);
-            shot.buckets_count = random.nextInt(50);
-            shot.description = shot.title +  " description";
+        if (shots.size() <= 30) {
+            Random random = new Random();
+            for (int i = 0; i < (page < 3 ? 12 : 6); ++i) {
+                Shot shot = new Shot();
+                shot.title = "shot" + String.valueOf(i + (page - 1) * 12);
+                shot.views_count = random.nextInt(10000);
+                shot.likes_count = random.nextInt(200);
+                shot.buckets_count = random.nextInt(50);
+                shot.description = shot.title + " description";
 
-            shot.images = new HashMap<>();
-            shot.images.put(Shot.IMAGE_HIDPI, imageUrls[random.nextInt(imageUrls.length)]);
+                shot.images = new HashMap<>();
+                shot.images.put(Shot.IMAGE_HIDPI, imageUrls[random.nextInt(imageUrls.length)]);
 
-            shot.user = new User();
-            shot.user.name = shot.title + " author";
+                shot.user = new User();
+                shot.user.name = shot.title + " author";
 
-            shotList.add(shot);
+                shotList.add(shot);
+            }
+            shots.addAll(shotList);
+            ModelUtils.save(context, KEY_SHOT, shots);
+        } else {
+            for (int i = 0; i < (page < 3 ? 12 : 6); ++i) {
+                int index = (page - 1) * 12 + i;
+                shotList.add(shots.get(index));
+            }
         }
         return shotList;
     }
@@ -181,14 +203,14 @@ public class Dribbbo {
 
     private static List<Bucket> fakeBucketData(int page) {
         List<Bucket> bucketList = new ArrayList<>();
-        if (buckets.size() == 0) {
+        if (buckets.size() <= 30) {
             Random random = new Random();
             for (int i = 0; i < (page < 3 ? 12 : 6); ++i) {
                 Bucket bucket = new Bucket();
                 bucket.name = "Bucket" + String.valueOf(i + (page - 1) * 12);
                 bucket.shots_count = random.nextInt(10);
                 bucketList.add(bucket);
-                bucket.isChosen = (random.nextInt(10) % 2 == 0) ? false : true;
+                bucket.isChosen = false;
             }
 
             buckets.addAll(bucketList);
@@ -209,5 +231,21 @@ public class Dribbbo {
         buckets.add(0, bucket);
         ModelUtils.save(context, KEY_BUCKET, buckets);
         return bucket;
+    }
+
+    public static List<String> getUserBucketIDs() {
+        if (userBucketIDs == null) {
+            List<String> userBucketIDs = new ArrayList<>();
+            for (Bucket bucket : buckets) {
+                userBucketIDs.add(bucket.id);
+            }
+        }
+        return userBucketIDs;
+    }
+
+    public static void addBucketShot(String addedId, String id) {
+    }
+
+    public static void removeBucketShot(String removedId, String id) {
     }
 }

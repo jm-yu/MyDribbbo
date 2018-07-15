@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 import jmyu.ufl.edu.mydribbbo.R;
 import jmyu.ufl.edu.mydribbbo.model.Shot;
 import jmyu.ufl.edu.mydribbbo.view.bucket_list.ChooseBucketActivity;
@@ -26,8 +28,11 @@ class ShotAdapter extends RecyclerView.Adapter {
     private static final int VIEW_SHOT_TYPE_IMAGE = 1;
     private static final int VIEW_SHOT_TYPE_INFO = 2;
 
-    public ShotAdapter(@NonNull Shot shot) {
+    List<String> userBucketIDs;
+
+    public ShotAdapter(@NonNull Shot shot, List<String> userBucketIDs) {
         this.shot = shot;
+        this.userBucketIDs = userBucketIDs;
     }
 
     @Override
@@ -87,5 +92,9 @@ class ShotAdapter extends RecyclerView.Adapter {
             return VIEW_SHOT_TYPE_INFO;
         }
         return -1;
+    }
+
+    public List<String> getUserBucketIds() {
+        return userBucketIDs;
     }
 }
